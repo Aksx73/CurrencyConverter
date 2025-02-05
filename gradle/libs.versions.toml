@@ -34,7 +34,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 ktor-client-core = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktor" }
 ktor-client-logging = { group = "io.ktor", name = "ktor-client-logging", version.ref = "ktor" }
-ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
@@ -46,10 +46,10 @@ koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compos
 [bundles] # use kebab-case
 ktor = [
     "ktor-client-android",
-    "ktor-client-content-negotiation",
     "ktor-serialization-kotlinx-json",
     "ktor-client-logging",
-    "ktor-client-core"
+    "ktor-client-core",
+    "ktor-client-content-negotiation"
 ]
 room = [
     "room-runtime",
