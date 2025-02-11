@@ -18,7 +18,17 @@ object Util {
 			val date = dateFormat.parse(dateString)
 			return date?.time ?: 0L
 		}
-
 	}
+
+	fun getCurrencySymbol(currencyCode: String): String {
+		return when (currencyCode) {
+			"usd" -> "$"
+			"eur" -> "€"
+			else -> ""
+		}
+	}
+
+
+
 
 }
