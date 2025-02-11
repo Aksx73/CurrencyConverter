@@ -13,7 +13,7 @@ kotlinxSerializationJson = "1.7.3"
 ksp = "2.0.10-1.0.24"
 room = "2.6.1"
 koin = "4.0.2"
-
+coroutines = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,7 +42,8 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-ksp = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
 koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
-
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
 
 [bundles] # use kebab-case
 ktor = [
@@ -60,6 +61,10 @@ room = [
 koin = [
     "koin-android",
     "koin-androidx-compose",
+]
+coroutines = [
+    "kotlinx-coroutines-core",
+    "kotlinx-coroutines-android"
 ]
 
 
