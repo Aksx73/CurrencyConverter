@@ -34,5 +34,11 @@ class MainViewModel(
 		}
 	}
 
+	//todo
+	// check local for value of date when last updated
+	// fetch currencies and its rate from remote api
+	// save it in local db
+	// access data from local db
+
 
 }
