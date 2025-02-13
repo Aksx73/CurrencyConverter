@@ -14,39 +14,19 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.absut.currencyconverter.ui.theme.CurrencyConverterTheme
+import com.absut.currencyconverter.ui.viewmodel.MainViewModel
+import com.absut.currencyconverter.ui.views.HomeScreen
 
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            CurrencyConverterTheme {
-                HomeScreen()
-            }
-        }
-    }
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		enableEdgeToEdge()
+		setContent {
+			CurrencyConverterTheme {
+				HomeScreen(viewModel = viewModel<MainViewModel>())
+			}
+		}
+	}
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(text = "Currency Converter") },
-            )
-        }
-    ) { innerPadding ->
-        Column(modifier = modifier.padding(innerPadding)) {
-
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun HomeScreenPreview() {
-    HomeScreen()
-}
-
