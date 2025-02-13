@@ -4,12 +4,14 @@ import com.absut.currencyconverter.data.local.CurrencyDao
 import com.absut.currencyconverter.data.mapper.toCurrencies
 import com.absut.currencyconverter.data.mapper.toCurrencyRates
 import com.absut.currencyconverter.data.remote.ApiService
+import com.absut.currencyconverter.data.util.Resource
 import com.absut.currencyconverter.domain.model.Currencies
 import com.absut.currencyconverter.domain.model.Currency
 import com.absut.currencyconverter.domain.model.Rates
 import com.absut.currencyconverter.domain.repository.CurrencyRepository
 import com.bjsindia.bjscommunity.data.remote.NetworkResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class CurrencyRepositoryImpl(
 	private val api: ApiService,
@@ -48,5 +50,15 @@ class CurrencyRepositoryImpl(
 
 	override suspend fun insertRates(rates: Rates) {
 		return dao.insertRates(rates)
+	}
+
+	override suspend fun fetchAndSaveCurrencies(): Flow<Resource<Unit>> = flow {
+		try {
+			val data = api.getCurrencies().toCurrencies()
+			dao.insertCurrencies(data.currency)
+			emit(Resource.Success(Unit))
+		} catch (e: Exception) {
+			emit(Resource.Error(e.message ?: "An unknown error occurred"))
+		}
 	}
 }

@@ -1,5 +1,6 @@
 package com.absut.currencyconverter.domain.repository
 
+import com.absut.currencyconverter.data.util.Resource
 import com.absut.currencyconverter.domain.model.Currencies
 import com.absut.currencyconverter.domain.model.Currency
 import com.absut.currencyconverter.domain.model.Rates
@@ -19,4 +20,6 @@ interface CurrencyRepository {
 	suspend fun insertCurrencies(currencies: List<Currency>)
 
 	suspend fun insertRates(rates: Rates)
+
+	suspend fun fetchAndSaveCurrencies(): Flow<Resource<Unit>>
 }
