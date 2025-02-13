@@ -1,25 +1,34 @@
 package com.absut.currencyconverter
 
 import android.app.Application
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.room.Room
+import com.absut.currencyconverter.data.local.CurrencyDatabase
+import com.absut.currencyconverter.data.remote.ApiService
+import com.absut.currencyconverter.data.remote.ktorHttpClient
+import com.absut.currencyconverter.data.repository.CurrencyRepositoryImpl
+import com.absut.currencyconverter.domain.repository.CurrencyRepository
+import com.absut.currencyconverter.ui.viewmodel.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 class CurrencyConverterApp : Application() {
 
-    override fun onCreate() {
-        super.onCreate()
+	override fun onCreate() {
+		super.onCreate()
 
-        startKoin {
-            androidLogger()
-            androidContext(this@CurrencyConverterApp)
-            modules(appModules)
-        }
-    }
+		startKoin {
+			androidLogger()
+			androidContext(this@CurrencyConverterApp)
+			modules(appModules)
+		}
+	}
 
 }
 
@@ -29,9 +38,19 @@ class CurrencyConverterApp : Application() {
  * ViewModel: Specifically designed for Android ViewModel instances, ensuring proper lifecycle management.
  * */
 val appModules = module {
-    single { }
-    //singleOf()
-    //factoryOf()
-    //viewModelOf()
+	single {
+		Room.databaseBuilder(
+			androidContext(),
+			CurrencyDatabase::class.java,
+			"currency_converter_db"
+		)
+			.fallbackToDestructiveMigration()
+			.build()
+	}
+	single { get<CurrencyDatabase>().currencyDao() }
+	single { ktorHttpClient }
+	single { ApiService(get()) }
+	single<CurrencyRepository> { CurrencyRepositoryImpl(get(), get()) }
+	viewModel { MainViewModel(get()) }
 
 }
