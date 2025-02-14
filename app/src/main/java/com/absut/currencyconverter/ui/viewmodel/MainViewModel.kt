@@ -68,4 +68,18 @@ class MainViewModel(
 		}
 	}
 
+	fun fetchAndSaveRatesForEUR() {
+		viewModelScope.launch {
+			/*repository.fetchAndSaveRatesForEUR().collect { result ->
+
+			}*/
+		}
+	}
+
+	fun getRatesForEURFromLocalDB(){
+		/*viewModelScope.launch {
+			repository.getLocalRatesForEUR()
+		}*/
+	}
+
 }
