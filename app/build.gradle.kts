@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.bundles.ktor)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.bundles.room)
+    ksp(libs.room.compiler)
     implementation(libs.bundles.koin)
     implementation(libs.kotlin.reflect)
     implementation(libs.bundles.coroutines)
