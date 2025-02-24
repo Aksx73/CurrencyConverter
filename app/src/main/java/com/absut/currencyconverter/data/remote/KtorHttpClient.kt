@@ -33,7 +33,7 @@ val ktorHttpClient = HttpClient(Android) {
 	}
 
 	defaultRequest {
-		url(ApiRoutes.BASE_URL)
+		//url(ApiRoutes.BASE_URL)
 		header(HttpHeaders.ContentType, ContentType.Application.Json)
 	}
 

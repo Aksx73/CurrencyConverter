@@ -28,6 +28,10 @@ class MainViewModel(
 	private val _rates = MutableStateFlow<NetworkResult<Rates>?>(null)
 	val rates: StateFlow<NetworkResult<Rates>?> = _rates
 
+	init {
+		fetchAndSaveCurrencies()
+	}
+
 	val currenciesFromDB = repository.getLocalCurrencies().stateIn(
 		viewModelScope,
 		started = SharingStarted.WhileSubscribed(5000),
