@@ -18,6 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.absut.currencyconverter.ui.theme.CurrencyConverterTheme
 import com.absut.currencyconverter.ui.viewmodel.MainViewModel
 import com.absut.currencyconverter.ui.views.HomeScreen
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
 		enableEdgeToEdge()
 		setContent {
 			CurrencyConverterTheme {
-				HomeScreen(viewModel = viewModel<MainViewModel>())
+				HomeScreen(viewModel = koinViewModel<MainViewModel>())
 			}
 		}
 	}
