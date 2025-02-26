@@ -3,6 +3,7 @@ package com.absut.currencyconverter.ui.views
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -42,8 +43,12 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 				}
 
 				is Resource.Success -> {
-					Text(text = "Success")
-
+					//Text(text = "Success")
+					LazyColumn {
+						items(currencies.value){ currency ->
+							CurrencyListItem(currency = currency, onClick = {})
+						}
+					}
 				}
 			}
 		}
