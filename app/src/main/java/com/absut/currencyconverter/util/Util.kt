@@ -1,6 +1,8 @@
 package com.absut.currencyconverter.util
 
 import android.os.Build
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.ZoneId
@@ -28,7 +30,24 @@ object Util {
 		}
 	}
 
+	// Helper function to format the number with commas as thousands separator
+	fun formatCurrency(value: String): String {
+		val decimalFormat = DecimalFormat("#,##0.####", DecimalFormatSymbols().apply {
+			groupingSeparator = ','
+			decimalSeparator = '.'
+		})
 
+		return try {
+			val doubleValue = value.toDoubleOrNull()
+			if (doubleValue != null) {
+				decimalFormat.format(doubleValue)
+			} else {
+				value
+			}
+		} catch (e: Exception) {
+			value
+		}
+	}
 
 
 }
