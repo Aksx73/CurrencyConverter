@@ -1,4 +1,4 @@
-package com.absut.currencyconverter.ui.views
+package com.absut.currencyconverter.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -36,7 +36,7 @@ fun CurrencyListItem(
 		modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 16.dp, vertical = 10.dp),
 		verticalAlignment = Alignment.CenterVertically,
 	) {
 		Image(
