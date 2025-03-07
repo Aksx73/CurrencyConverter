@@ -8,11 +8,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.absut.currencyconverter.ui.components.CurrencyInputField
 import com.absut.currencyconverter.ui.components.FavoriteItem
+import com.absut.currencyconverter.ui.viewmodel.MainViewModel
 
 @Composable
-fun CurrencyConverterScreen() {
+fun CurrencyConverterScreen(viewModel: MainViewModel, navController: NavController) {
 	var fromCurrency by remember { mutableStateOf("INR") }
 	var toCurrency by remember { mutableStateOf("AR") }
 	var fromAmount by remember { mutableStateOf("") }
@@ -21,7 +25,6 @@ fun CurrencyConverterScreen() {
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
-		//.padding(16.dp)
 	) {
 
 		Spacer(modifier = Modifier.height(24.dp))
@@ -57,8 +60,6 @@ fun CurrencyConverterScreen() {
 		// Favorites Section
 		Text(
 			text = "Favourites",
-			//fontSize = 20.sp,
-			//fontWeight = FontWeight.Bold,
 			modifier = Modifier.padding(horizontal = 16.dp)
 		)
 
@@ -90,6 +91,6 @@ fun CurrencyConverterScreen() {
 @Composable
 fun CurrencyConverterPreview() {
 	MaterialTheme {
-		CurrencyConverterScreen()
+		CurrencyConverterScreen(viewModel = viewModel(), navController = rememberNavController())
 	}
 }

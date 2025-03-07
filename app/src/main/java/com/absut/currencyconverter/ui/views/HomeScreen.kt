@@ -35,23 +35,29 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.absut.currencyconverter.R
 import com.absut.currencyconverter.data.util.Resource
 import com.absut.currencyconverter.ui.viewmodel.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
-
-	val currencyState = viewModel.currenciesState.collectAsState()
-	val currencies = viewModel.currenciesFromDB.collectAsState()
+fun HomeScreen(
+	modifier: Modifier = Modifier,
+	viewModel: MainViewModel,
+	navController: NavController
+) {
 
 	Scaffold(
 		topBar = {
 			TopAppBar(
 				title = { /*Text(text = "Currency Converter")*/ },
 				actions = {
-					IconButton(onClick = {}) {
+					IconButton(onClick = {
+						navController.navigate(Routes.CurrencyListScreen.route)
+					}) {
 						Icon(
 							imageVector = Icons.Default.Refresh,
 							contentDescription = "Menu"
@@ -91,26 +97,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 				.imeNestedScroll()
 				.verticalScroll(rememberScrollState())
 		) {
-			/*when (currencyState.value) {
-				is Resource.Loading -> {
-					Text(text = "Loading...")
-				}
-
-				is Resource.Error -> {
-					Text(text = "Error: ${currencyState.value.message}")
-				}
-
-				is Resource.Success -> {
-					//Text(text = "Success")
-					LazyColumn {
-						items(currencies.value){ currency ->
-							CurrencyListItem(currency = currency, onClick = {})
-						}
-					}
-				}
-			}*/
-
-			CurrencyConverterScreen()
+			CurrencyConverterScreen(viewModel = viewModel, navController = navController)
 		}
 	}
 }
@@ -119,6 +106,6 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
 @Composable
 private fun HomeScreenPreview() {
 	Surface {
-		HomeScreen(viewModel = viewModel<MainViewModel>())
+		HomeScreen(navController = rememberNavController(), viewModel = viewModel<MainViewModel>())
 	}
 }
