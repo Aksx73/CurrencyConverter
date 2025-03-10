@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -56,7 +57,7 @@ fun HomeScreen(
 				title = { /*Text(text = "Currency Converter")*/ },
 				actions = {
 					IconButton(onClick = {
-						navController.navigate(Routes.CurrencyListScreen.route)
+
 					}) {
 						Icon(
 							imageVector = Icons.Default.Refresh,
@@ -85,7 +86,7 @@ fun HomeScreen(
 				Text(
 					text = "Updated today 12:12 pm",
 					fontSize = 12.sp,
-					color = Color.DarkGray
+					color = LocalContentColor.current.copy(alpha = 0.8f),
 				)
 			}
 

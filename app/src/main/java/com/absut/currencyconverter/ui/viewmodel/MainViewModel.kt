@@ -19,11 +19,14 @@ class MainViewModel(
 	private val repository: CurrencyRepository
 ) : ViewModel() {
 
+	var currentSelectedCurrencyFrom: String = "USD"
+	var currentSelectedCurrencyTo: String = "INR"
+
 	private val _currencies = MutableStateFlow<NetworkResult<Currencies>?>(null)
-	val currencies : StateFlow<NetworkResult<Currencies>?> = _currencies
+	val currencies: StateFlow<NetworkResult<Currencies>?> = _currencies
 
 	private val _currenciesState = MutableStateFlow<Resource<Unit>>(Resource.Loading())
-	val currenciesState : StateFlow<Resource<Unit>> = _currenciesState
+	val currenciesState: StateFlow<Resource<Unit>> = _currenciesState
 
 	private val _rates = MutableStateFlow<NetworkResult<Rates>?>(null)
 	val rates: StateFlow<NetworkResult<Rates>?> = _rates
@@ -66,7 +69,7 @@ class MainViewModel(
 		}
 	}
 
-	fun getCurrenciesFromLocalDB(){
+	fun getCurrenciesFromLocalDB() {
 		viewModelScope.launch {
 			repository.getLocalCurrencies()
 		}
@@ -80,10 +83,14 @@ class MainViewModel(
 		}
 	}
 
-	fun getRatesForEURFromLocalDB(){
+	fun getRatesForEURFromLocalDB() {
 		/*viewModelScope.launch {
 			repository.getLocalRatesForEUR()
 		}*/
 	}
 
+}
+
+enum class SelectedCurrency {
+	FROM, TO
 }
