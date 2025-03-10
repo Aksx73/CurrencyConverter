@@ -32,6 +32,7 @@ fun CurrencyConverterScreen(viewModel: MainViewModel, navController: NavControll
 		// From Currency Input
 		CurrencyInputField(
 			selectedCurrency = fromCurrency,
+			onCurrencyClick = { navController.navigate(Routes.CurrencyListScreen.route) },
 			onCurrencyChange = { fromCurrency = it },
 			amount = fromAmount,
 			onAmountChange = { fromAmount = it },
@@ -46,6 +47,7 @@ fun CurrencyConverterScreen(viewModel: MainViewModel, navController: NavControll
 		// To Currency Input
 		CurrencyInputField(
 			selectedCurrency = toCurrency,
+			onCurrencyClick = { navController.navigate(Routes.CurrencyListScreen.route) },
 			onCurrencyChange = { toCurrency = it },
 			amount = toAmount,
 			onAmountChange = { toAmount = it },

@@ -55,13 +55,14 @@ import com.absut.currencyconverter.util.ThousandsSeparatorVisualTransformation
 @Composable
 fun CurrencyInputField(
 	selectedCurrency: String,
+	onCurrencyClick: () -> Unit,
 	onCurrencyChange: (String) -> Unit,
 	amount: String = "",
 	onAmountChange: (String) -> Unit,
 	placeholder: String,
 	modifier: Modifier = Modifier
 ) {
-	var expanded by remember { mutableStateOf(false) }
+	//var expanded by remember { mutableStateOf(false) }
 	val currencyVisualTransformation = remember { ThousandsSeparatorVisualTransformation() }
 	var textFieldValueState by remember {
 		mutableStateOf(TextFieldValue(text = amount, selection = TextRange(amount.length)))
@@ -88,7 +89,7 @@ fun CurrencyInputField(
 			Row(
 				verticalAlignment = Alignment.CenterVertically,
 				modifier = Modifier
-					.clickable { expanded = true }
+					.clickable { onCurrencyClick() }
 					.weight(0.4f)
 			) {
 				Image(
@@ -180,7 +181,7 @@ fun CurrencyInputField(
 		}
 
 		// Dropdown menu for currency selection
-		DropdownMenu(
+		/*DropdownMenu(
 			expanded = expanded,
 			onDismissRequest = { expanded = false }
 		) {
@@ -194,7 +195,7 @@ fun CurrencyInputField(
 					}
 				)
 			}
-		}
+		}*/
 	}
 }
 
@@ -207,6 +208,7 @@ private fun CurrencyInputFieldPreview() {
 	Surface {
 		CurrencyInputField(
 			selectedCurrency = fromCurrency,
+			onCurrencyClick = {},
 			onCurrencyChange = { fromCurrency = it },
 			amount = fromAmount,
 			onAmountChange = { fromAmount = it },
