@@ -46,6 +46,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,7 +57,7 @@ import com.absut.currencyconverter.util.ThousandsSeparatorVisualTransformation
 fun CurrencyInputField(
 	selectedCurrency: String,
 	onCurrencyClick: () -> Unit,
-	onCurrencyChange: (String) -> Unit,
+	//onCurrencyChange: (String) -> Unit,
 	amount: String = "",
 	onAmountChange: (String) -> Unit,
 	placeholder: String,
@@ -90,7 +91,7 @@ fun CurrencyInputField(
 				verticalAlignment = Alignment.CenterVertically,
 				modifier = Modifier
 					.clickable { onCurrencyClick() }
-					.weight(0.4f)
+					.weight(0.5f)
 			) {
 				Image(
 					painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -104,7 +105,7 @@ fun CurrencyInputField(
 				Spacer(modifier = Modifier.width(8.dp))
 
 				Text(
-					text = selectedCurrency,
+					text = selectedCurrency.uppercase().take(3),
 					fontWeight = FontWeight.Bold,
 					fontSize = 20.sp,
 					color = MaterialTheme.colorScheme.primary
@@ -202,14 +203,14 @@ fun CurrencyInputField(
 @Preview
 @Composable
 private fun CurrencyInputFieldPreview() {
-	var fromCurrency by remember { mutableStateOf("INR") }
+	var fromCurrency by remember { mutableStateOf("usd") }
 	var fromAmount by remember { mutableStateOf("") }
 
 	Surface {
 		CurrencyInputField(
 			selectedCurrency = fromCurrency,
 			onCurrencyClick = {},
-			onCurrencyChange = { fromCurrency = it },
+			//onCurrencyChange = { fromCurrency = it },
 			amount = fromAmount,
 			onAmountChange = { fromAmount = it },
 			placeholder = "1",
