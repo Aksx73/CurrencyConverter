@@ -13,14 +13,15 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.absut.currencyconverter.ui.components.CurrencyInputField
 import com.absut.currencyconverter.ui.components.FavoriteItem
+import com.absut.currencyconverter.ui.viewmodel.CurrencyType
 import com.absut.currencyconverter.ui.viewmodel.MainViewModel
 
 @Composable
 fun CurrencyConverterScreen(viewModel: MainViewModel, navController: NavController) {
-	var fromCurrency by remember { mutableStateOf("INR") }
-	var toCurrency by remember { mutableStateOf("AR") }
-	var fromAmount by remember { mutableStateOf("") }
-	var toAmount by remember { mutableStateOf("") }
+	var fromCurrency by remember { mutableStateOf(viewModel.currentSelectedCurrencyFrom) }
+	var toCurrency by remember { mutableStateOf(viewModel.currentSelectedCurrencyTo) }
+	var fromAmount by remember { mutableStateOf(viewModel.fromAmount) }
+	var toAmount by remember { mutableStateOf(viewModel.toAmount) }
 
 	Column(
 		modifier = Modifier
@@ -32,8 +33,11 @@ fun CurrencyConverterScreen(viewModel: MainViewModel, navController: NavControll
 		// From Currency Input
 		CurrencyInputField(
 			selectedCurrency = fromCurrency,
-			onCurrencyClick = { navController.navigate(Routes.CurrencyListScreen.route) },
-			onCurrencyChange = { fromCurrency = it },
+			onCurrencyClick = {
+				viewModel.setSelectedCurrencyType(CurrencyType.FROM)
+				navController.navigate(Routes.CurrencyListScreen.route)
+			},
+			//onCurrencyChange = { fromCurrency = it },
 			amount = fromAmount,
 			onAmountChange = { fromAmount = it },
 			placeholder = "1",
@@ -47,8 +51,11 @@ fun CurrencyConverterScreen(viewModel: MainViewModel, navController: NavControll
 		// To Currency Input
 		CurrencyInputField(
 			selectedCurrency = toCurrency,
-			onCurrencyClick = { navController.navigate(Routes.CurrencyListScreen.route) },
-			onCurrencyChange = { toCurrency = it },
+			onCurrencyClick = {
+				viewModel.setSelectedCurrencyType(CurrencyType.TO)
+				navController.navigate(Routes.CurrencyListScreen.route)
+			},
+			//onCurrencyChange = { toCurrency = it },
 			amount = toAmount,
 			onAmountChange = { toAmount = it },
 			placeholder = "24.3",
