@@ -19,8 +19,11 @@ class MainViewModel(
 	private val repository: CurrencyRepository
 ) : ViewModel() {
 
-	var currentSelectedCurrencyFrom: String = "USD"
-	var currentSelectedCurrencyTo: String = "INR"
+	var currentSelectedCurrencyFrom: String = "usd"
+	var fromAmount: String = ""
+	var currentSelectedCurrencyTo: String = "inr"
+	var toAmount: String = ""
+	private var selectedCurrencyType: CurrencyType = CurrencyType.FROM
 
 	private val _currencies = MutableStateFlow<NetworkResult<Currencies>?>(null)
 	val currencies: StateFlow<NetworkResult<Currencies>?> = _currencies
@@ -33,6 +36,14 @@ class MainViewModel(
 
 	init {
 		fetchAndSaveCurrencies()
+	}
+
+	fun getSelectedCurrencyType(): CurrencyType {
+		return selectedCurrencyType
+	}
+
+	fun setSelectedCurrencyType(type: CurrencyType) {
+		selectedCurrencyType = type
 	}
 
 	val currenciesFromDB = repository.getLocalCurrencies().stateIn(
@@ -91,6 +102,6 @@ class MainViewModel(
 
 }
 
-enum class SelectedCurrency {
+enum class CurrencyType {
 	FROM, TO
 }

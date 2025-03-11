@@ -50,7 +50,6 @@ fun HomeScreen(
 	viewModel: MainViewModel,
 	navController: NavController
 ) {
-
 	Scaffold(
 		topBar = {
 			TopAppBar(

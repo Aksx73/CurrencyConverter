@@ -32,13 +32,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import com.absut.currencyconverter.data.util.Resource
 import com.absut.currencyconverter.ui.components.CurrencyListItem
+import com.absut.currencyconverter.ui.viewmodel.CurrencyType
 import com.absut.currencyconverter.ui.viewmodel.MainViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun CurrencyListScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) {
+fun CurrencyListScreen(modifier: Modifier = Modifier, viewModel: MainViewModel, navController: NavController) {
 	var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
 
 	val currencyState = viewModel.currenciesState.collectAsState()
@@ -72,7 +74,7 @@ fun CurrencyListScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) 
 				},
 				navigationIcon = {
 					IconButton(onClick = {
-
+						navController.navigateUp()
 					}) {
 						Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
 					}
@@ -95,10 +97,18 @@ fun CurrencyListScreen(modifier: Modifier = Modifier, viewModel: MainViewModel) 
 				}
 
 				is Resource.Success -> {
-					//Text(text = "Success")
 					LazyColumn {
-						items(currencies.value){ currency ->
-							CurrencyListItem(currency = currency, onClick = {})
+						items(currencies.value) { currency ->
+							CurrencyListItem(currency = currency, onClick = {
+								when (viewModel.getSelectedCurrencyType()) {
+									CurrencyType.FROM ->
+										viewModel.currentSelectedCurrencyFrom = currency.code
+
+									CurrencyType.TO ->
+										viewModel.currentSelectedCurrencyTo = currency.code
+								}
+								navController.navigateUp()
+							})
 						}
 					}
 				}
