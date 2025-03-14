@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imeNestedScroll
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,6 +30,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,82 +39,93 @@ import com.absut.currencyconverter.data.util.Resource
 import com.absut.currencyconverter.ui.components.CurrencyListItem
 import com.absut.currencyconverter.ui.viewmodel.CurrencyType
 import com.absut.currencyconverter.ui.viewmodel.MainViewModel
+import kotlin.code
+import kotlin.ranges.contains
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun CurrencyListScreen(modifier: Modifier = Modifier, viewModel: MainViewModel, navController: NavController) {
-	var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
+fun CurrencyListScreen(
+    modifier: Modifier = Modifier,
+    viewModel: MainViewModel,
+    navController: NavController
+) {
+    var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
 
-	val currencyState = viewModel.currenciesState.collectAsState()
-	val currencies = viewModel.currenciesFromDB.collectAsState()
+    val currencyState = viewModel.currenciesState.collectAsState()
+    val currencies = viewModel.currenciesFromDB.collectAsState()
 
-	Scaffold(
-		topBar = {
-			TopAppBar(
-				title = {
-					TextField(
-						value = searchQuery,
-						onValueChange = { searchQuery = it },
-						placeholder = { Text("Search...") },
-						modifier = Modifier.fillMaxWidth(),
-						trailingIcon = {
-							IconButton(onClick = { searchQuery = TextFieldValue("") }) {
-								Icon(
-									imageVector = Icons.Default.Close,
-									contentDescription = "Close"
-								)
-							}
-						},
-						colors = TextFieldDefaults.colors(
-							focusedContainerColor = Color.Transparent,
-							unfocusedContainerColor = Color.Transparent,
-							disabledContainerColor = Color.Transparent,
-							focusedIndicatorColor = Color.Transparent,
-							unfocusedIndicatorColor = Color.Transparent
-						)
-					)
-				},
-				navigationIcon = {
-					IconButton(onClick = {
-						navController.navigateUp()
-					}) {
-						Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
-					}
-				},
-				scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
-			)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    TextField(
+                        value = searchQuery,
+                        onValueChange = { searchQuery = it },
+                        placeholder = { Text("Search currency..") },
+                        modifier = Modifier.fillMaxWidth(),
+                        trailingIcon = {
+                            IconButton(onClick = { searchQuery = TextFieldValue("") }) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Close"
+                                )
+                            }
+                        },
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        )
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        navController.navigateUp()
+                    }) {
+                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+            )
 
-		}) { innerPadding ->
-		Column(
-			modifier = modifier
+        }) { innerPadding ->
+        Column(
+            modifier = modifier
 				.padding(innerPadding)
-		) {
-			when (currencyState.value) {
-				is Resource.Loading -> {
-					Text(text = "Loading...")
-				}
+				.imePadding()
+        ) {
+            when (currencyState.value) {
+                is Resource.Loading -> {
+                    Text(text = "Loading...")
+                }
 
-				is Resource.Error -> {
-					Text(text = "Error: ${currencyState.value.message}")
-				}
+                is Resource.Error -> {
+                    Text(text = "Error: ${currencyState.value.message}")
+                }
 
-				is Resource.Success -> {
-					LazyColumn {
-						items(currencies.value) { currency ->
-							CurrencyListItem(currency = currency, onClick = {
-								when (viewModel.getSelectedCurrencyType()) {
-									CurrencyType.FROM ->
-										viewModel.currentSelectedCurrencyFrom = currency.code
+                is Resource.Success -> {
+                    val filteredCurrencies = currencies.value.filter { currency ->
+                        currency.name?.contains(searchQuery.text, ignoreCase = true) == true ||
+                                currency.code.contains(searchQuery.text, ignoreCase = true)
+                    }
+                    LazyColumn {
+                        items(filteredCurrencies) { currency ->
+                            CurrencyListItem(currency = currency, onClick = {
+                                when (viewModel.getSelectedCurrencyType()) {
+                                    CurrencyType.FROM ->
+                                        viewModel.currentSelectedCurrencyFrom = currency.code
 
-									CurrencyType.TO ->
-										viewModel.currentSelectedCurrencyTo = currency.code
-								}
-								navController.navigateUp()
-							})
-						}
-					}
-				}
-			}
-		}
-	}
+                                    CurrencyType.TO ->
+                                        viewModel.currentSelectedCurrencyTo = currency.code
+                                }
+                                navController.navigateUp()
+                            })
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
