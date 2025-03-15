@@ -1,5 +1,6 @@
 package com.absut.currencyconverter.ui.views
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.fillMaxSize
@@ -53,6 +54,14 @@ fun CurrencyListScreen(
 
     val currencyState = viewModel.currenciesState.collectAsState()
     val currencies = viewModel.currenciesFromDB.collectAsState()
+
+    BackHandler {
+        if (searchQuery.text.isNotEmpty()){
+            searchQuery = TextFieldValue("")
+        }else{
+            navController.navigateUp()
+        }
+    }
 
     Scaffold(
         topBar = {
