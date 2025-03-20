@@ -21,16 +21,38 @@ fun CurrenciesDto.toCurrencies(): Currencies {
 	return Currencies(currency)
 }
 
-fun CurrencyRateDto.toCurrencyRate(code: String): List<CurrencyRate> {
+/*fun CurrencyRateDto.toCurrencyRate(code: String): List<CurrencyRate> {
 	val currencyRate = mutableListOf<CurrencyRate>()
 	for (property in CurrencyRateDto::class.memberProperties) {
 		val value = property.get(this) as? Double ?: continue
 		currencyRate.add(CurrencyRate(baseCurrencyCode = code, code = property.name, value = value))
 	}
 	return currencyRate
-}
+}*/
 
 fun RatesEurDto.toCurrencyRates(): Rates {
+	val baseCurrencyCode = COUNTRY_CODE_EUR
+	val date = Util.getTimeMillisFromDate(this.date)
+	val currencyRateDto = RatesEurDto::class.memberProperties.find {
+		it.name == COUNTRY_CODE_EUR
+	}?.get(this) as CurrencyRateDto
+
+	val currencyRate = mutableListOf<CurrencyRate>()
+	for (property in CurrencyRateDto::class.memberProperties) {
+		val value = property.get(currencyRateDto) as? Double ?: continue
+		currencyRate.add(
+			CurrencyRate(
+				date = date,
+				code = property.name,
+				value = value,
+				baseCurrencyCode = baseCurrencyCode
+			)
+		)
+	}
+	return Rates(currencyRate)
+}
+
+/*fun RatesEurDto.toCurrencyRates(): Rates {
 	val baseCurrencyCode = COUNTRY_CODE_EUR
 	val currencyRateDto = RatesEurDto::class.memberProperties.find {
 		it.name == COUNTRY_CODE_EUR
@@ -42,5 +64,5 @@ fun RatesEurDto.toCurrencyRates(): Rates {
 		baseCurrencyCode = baseCurrencyCode,
 		rates = currencyRateDto.toCurrencyRate(baseCurrencyCode)
 	)
-}
+}*/
 

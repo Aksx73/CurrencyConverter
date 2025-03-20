@@ -22,4 +22,9 @@ interface CurrencyRepository {
 	suspend fun insertRates(rates: Rates)
 
 	suspend fun fetchAndSaveCurrencies(): Flow<Resource<Unit>>
+
+	suspend fun fetchAndSaveRatesForEUR(): Flow<Resource<Unit>>
+
+	suspend fun getCurrencyRate(baseCurrency: String, targetCurrency: String): CurrencyRate
+
 }

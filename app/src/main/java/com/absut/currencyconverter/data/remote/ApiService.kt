@@ -21,7 +21,6 @@ class ApiService(private val client: HttpClient) {
 	}*/
 
 	suspend fun getCurrencies(endpoint: String = ApiRoutes.GET_CURRENCIES): CurrenciesDto {
-		//val url = "$endpoint.json"
 		val url = "${ApiRoutes.BASE_URL}$endpoint.json"
 		val response = client.get(url)
 		return response.body()
@@ -31,7 +30,7 @@ class ApiService(private val client: HttpClient) {
 		endpoint: String = ApiRoutes.GET_RATES,
 		baseCurrency: String = Constants.COUNTRY_CODE_EUR
 	): RatesEurDto {
-		val url = String.format(endpoint, baseCurrency) + ".json"
+		val url = "${ApiRoutes.BASE_URL}${String.format(endpoint, baseCurrency)}.json"
 		val response = client.get(url)
 		return response.body()
 	}

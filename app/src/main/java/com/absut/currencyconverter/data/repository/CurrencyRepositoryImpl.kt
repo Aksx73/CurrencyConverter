@@ -61,4 +61,21 @@ class CurrencyRepositoryImpl(
 			emit(Resource.Error(e.message ?: "An unknown error occurred"))
 		}
 	}
+
+	override suspend fun fetchAndSaveRatesForEUR(): Flow<Resource<Unit>> = flow {
+		try {
+			val data = api.getRatesForEUR().toCurrencyRates()
+			dao.insertRates(data.rate)
+			emit(Resource.Success(Unit))
+		} catch (e: Exception) {
+			emit(Resource.Error(e.message ?: "An unknown error occurred"))
+		}
+	}
+
+	override suspend fun getCurrencyRate(
+		baseCurrency: String,
+		targetCurrency: String
+	): CurrencyRate {
+		return dao.getRate(targetCurrency, baseCurrency)
+	}
 }

@@ -9,24 +9,31 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-@Keep
+/*@Keep
 @Serializable
-@Entity(tableName = "eu_rates")
-@TypeConverters(CurrencyRateConverter::class)
 data class Rates(
-	@PrimaryKey val date: Long,
+	val date: Long,
 	val baseCurrencyCode: String,
 	val rates: List<CurrencyRate>
+)*/
+
+@Keep
+@Serializable
+data class Rates(
+	val rate: List<CurrencyRate>,
 )
 
 @Keep
 @Serializable
+@Entity(tableName = "eu_rates")
 data class CurrencyRate(
-	val code: String,
+	val date: Long,
+	@PrimaryKey val code: String,
 	val value: Double,
 	val baseCurrencyCode: String,
 )
 
+/*
 class CurrencyRateConverter {
 	@TypeConverter
 	fun fromCurrencyRate(currencyRate: List<CurrencyRate>): String {
@@ -37,4 +44,4 @@ class CurrencyRateConverter {
 	fun toCurrencyRate(currencyRate: String): List<CurrencyRate> {
 		return Json.decodeFromString(currencyRate)
 	}
-}
+}*/

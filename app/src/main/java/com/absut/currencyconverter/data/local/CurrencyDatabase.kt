@@ -3,10 +3,11 @@ package com.absut.currencyconverter.data.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.absut.currencyconverter.domain.model.Currency
+import com.absut.currencyconverter.domain.model.CurrencyRate
 import com.absut.currencyconverter.domain.model.Rates
 
 @Database(
-    entities = [Currency::class, Rates::class],
+    entities = [Currency::class, CurrencyRate::class],
     version = 1,
     exportSchema = false
 )
